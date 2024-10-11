@@ -8,7 +8,7 @@ class MessageFieldBox extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final textController = TextEditingController();
-    final FocusNode focusNode = FocusNode();
+    late FocusNode focusNode = FocusNode();
 
     final outlineInputBorder = UnderlineInputBorder(
       borderSide: const BorderSide(color: Colors.transparent),
@@ -23,8 +23,11 @@ class MessageFieldBox extends StatelessWidget {
       suffixIcon: IconButton(
           onPressed: () {
             final textValue = textController.value.text;
-            textController.clear();
             onValue(textValue);
+            textController.clear();
+            Future.delayed(const Duration(milliseconds: 50), () {
+              focusNode.requestFocus();
+            });
           },
           icon: const Icon(Icons.send)),
     );
@@ -37,9 +40,12 @@ class MessageFieldBox extends StatelessWidget {
       controller: textController,
       decoration: inputDecoration,
       onFieldSubmitted: (value) {
-        textController.clear();
         onValue(value);
+        textController.clear();
         focusNode.requestFocus();
+        textController.selection = TextSelection.fromPosition(
+          const TextPosition(offset: 0), // Coloca el cursor al final
+        );
       },
     );
   }

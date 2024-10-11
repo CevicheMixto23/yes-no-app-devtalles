@@ -48,7 +48,7 @@ class _ChatView extends StatelessWidget {
                           ? MyMessageBubble(
                               message: message,
                             )
-                          : const HerMessageBubble();
+                          : HerMessageBubble(message: message);
                     })),
             MessageFieldBox(
               onValue: chatProvider.sendMessage,
